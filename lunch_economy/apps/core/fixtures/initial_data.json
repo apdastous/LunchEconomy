@@ -1,0 +1,194 @@
+[
+    {
+        "model": "core.quote",
+        "pk": 1,
+        "fields": {
+            "author": "Louis C. K.",
+            "text": "When I take my kids out for dinner or lunch, people smile at us."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 2,
+        "fields": {
+            "author": "L'Wren Scott",
+            "text": "I believe in stopping work and eating lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 3,
+        "fields": {
+            "author": "W. Clement Stone",
+            "text": "What contemptible scoundrel has stolen the cork to my lunch?"
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 4,
+        "fields": {
+            "author": "Ronald Reagan",
+            "text": "I never drink coffee at lunch. I find it keeps me awake for the afternoon."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 5,
+        "fields": {
+            "author": "Aldous Huxley",
+            "text": "A man may be a pessimistic determinist before lunch and an optimistic believer in the will's freedom after it."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 6,
+        "fields": {
+            "author": "Orson Welles",
+            "text": "Ask not what you can do for your country. Ask what's for lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 7,
+        "fields": {
+            "author": "Milton Friedman",
+            "text": "There's no such thing as a free lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 8,
+        "fields": {
+            "author": "William Feather",
+            "text": "When ordering lunch, the big executives are just as indecisive as the rest of us."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 9,
+        "fields": {
+            "author": "Lyndon B. Johnson",
+            "text": "When I was a boy we didn't wake up with Vietnam and have Cyprus for lunch and the Congo for dinner."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 10,
+        "fields": {
+            "author": "Larry David",
+            "text": "The lunch in a normal American restaurant is very problematic for me. I don't like to have hot food for lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 11,
+        "fields": {
+            "author": "Gary Oldman",
+            "text": "I like a cheese and pickle. Nice cheese and pickle on a real old-fashioned bread. Ploughman's lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 12,
+        "fields": {
+            "author": "Barry Commoner",
+            "text": "There is no such thing as a free lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 13,
+        "fields": {
+            "author": "Mika",
+            "text": "Sometimes I dress like what I want for lunch, because all I can think about is having a tuna sandwich."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 14,
+        "fields": {
+            "author": "Adam Osborne",
+            "text": "The small businessman is smart; he realizes there's no free lunch. On the other hand, he knows where to go to get a good inexpensive sandwich."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 15,
+        "fields": {
+            "author": "Ina Garten",
+            "text": "My favorite fall or winter lunch is big steaming bowls of soup. I usually invite people for around 12:30 and have two hearty soups like shrimp corn chowder and lentil sausage soup, which can be made a day or two ahead."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 16,
+        "fields": {
+            "author": "Oliver Stone",
+            "text": "Lunch is for wimps."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 17,
+        "fields": {
+            "author": "Tommy Lee Jones",
+            "text": "The most important question in American cinema, I've learned, is \"When is lunch?\""
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 18,
+        "fields": {
+            "author": "A. N. Wilson",
+            "text": "If you read about Mussolini or Stalin or some of these other great monsters of history, they were at it all the time, that they were getting up in the morning very early. They were physically very active. They didn't eat lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 19,
+        "fields": {
+            "author": "Karlie Kloss",
+            "text": "It's nice to just be a kid and hang out with your friends at lunch."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 20,
+        "fields": {
+            "author": "Esther Williams",
+            "text": "There was a policy at Hughes against drinking at lunch, but the men ignored it."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 21,
+        "fields": {
+            "author": "Christine Baranski",
+            "text": "Really, can anyone drink several martinis at lunch?"
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 22,
+        "fields": {
+            "author": "Caroline Knapp",
+            "text": "Before you open the lunch menu or order that cheeseburger or consider eating the cake with the frosting intact, haul out the psychic calculator and start tinkering with the budget."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 23,
+        "fields": {
+            "author": "Charlotte Gainsbourg",
+            "text": "In France, you're with the crew, and you have lunch with them. It's more like a family."
+        }
+    },
+    {
+        "model": "core.quote",
+        "pk": 24,
+        "fields": {
+            "author": "Robert Goulet",
+            "text": "I only eat one meal a day. Lunch, not dinner."
+        }
+    }
+]

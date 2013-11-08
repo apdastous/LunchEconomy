@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Time to eat!</h1>
+        <blockquote>
+            <p>{{ quote.text }}</p>
+            <small>{{ quote.author }}</small>
+        </blockquote>
+        <p>
+          <a class="btn btn-large btn-primary" href="#">Let's Lunch! &raquo;</a>
+        </p>
+    </div>
+{% endblock %}
