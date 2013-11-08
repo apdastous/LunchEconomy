@@ -1,0 +1,11 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 100,
+        "fields": {
+            "username": "The Lunch Master",
+            "password": "pbkdf2_sha256$12000$Wy4W5mSF891U$vwgoVdd20B98rcwayyix+ji1RlXd0dYUlfjN5B+kbk0=",
+            "is_active": false
+        }
+    }
+]

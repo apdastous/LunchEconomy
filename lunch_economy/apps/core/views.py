@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 from lunch_economy.apps.core.models import Quote
+from lunch_economy.apps.mail.models import Mail
 
 
 def home(request):
@@ -35,6 +36,10 @@ def log_in(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, "Account has been created!")
+            Mail.system_notification(
+                recipient=new_user,
+                text="Welcome to the site!"
+            )
             return redirect('lunch_economy.apps.core.views.home')
 
         messages.error(request, "Invalid login or username already taken.")

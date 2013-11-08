@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}My Groups{% endblock %}
+
+{% block body %}
+
+    {% for group in user.lunchgroup_set.all %}
+        <p><a href="{% url 'group_detail' group.id %}">{{ group.name }}</a> - {{ group.leader.username }}</p>
+    {% endfor %}
+
+{% endblock %}

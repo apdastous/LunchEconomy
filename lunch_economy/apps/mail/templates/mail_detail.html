@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block body %}
+
+    <p>{{ mail.sender }}</p>
+    <p>{{ mail.recipient }}</p>
+    <p>{{ mail.text }}</p>
+
+{% endblock %}

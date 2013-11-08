@@ -95,6 +95,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "lunch_economy.context_processors.unread_messages_notification"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,6 +128,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'lunch_economy.apps.core',
+    'lunch_economy.apps.groups',
+    'lunch_economy.apps.mail',
     'lunch_economy.apps.lunch',
 )
 

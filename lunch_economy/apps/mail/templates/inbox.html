@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block body %}
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>From</th>
+                <th>Body</th>
+            </tr>
+        </thead>
+        {% for item in mail %}
+            <tr>
+                <td>
+                    {{ item.sender }}
+                    {% if not item.read %}
+                        <span class="badge">New!</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'mail_detail' item.id %}">{{ item.text }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
