@@ -7,6 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'lunch_economy.apps.core.views.home', name='home'),
+    url(r'^login$', 'lunch_economy.apps.core.views.log_in', name='login'),
+    url(r'^logout$', 'lunch_economy.apps.core.views.log_out', name='logout'),
     # url(r'^lunch_economy/', include('lunch_economy.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
