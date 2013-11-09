@@ -11,8 +11,8 @@ from lunch_economy.apps.mail.models import Mail
 def home(request):
     quote = Quote.get_random()
     context = RequestContext(request, {
-            'quote': quote
-        })
+        'quote': quote
+    })
     return render(request, 'home.html', context)
 
 
