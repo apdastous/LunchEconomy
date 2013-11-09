@@ -4,8 +4,10 @@
 
 {% block body %}
 
-    <p>{{ mail.sender }}</p>
-    <p>{{ mail.recipient }}</p>
+    <p><a href="{% url 'inbox' %}">Back to Inbox</a>
+
+    <p><strong>From:</strong> {{ mail.sender }}</p>
+    <p><strong>To:</strong> {{ mail.recipient }}</p>
     <p>{{ mail.text }}</p>
 
 {% endblock %}
