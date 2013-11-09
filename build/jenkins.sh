@@ -2,7 +2,7 @@
 
 virtualenv --clear --no-site-packages env
 
-source activate env
+source env/bin/activate
 
 pip install -r requirements/jenkins.txt
 
