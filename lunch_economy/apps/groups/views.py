@@ -61,6 +61,9 @@ def join_group(request):
 
 
 def send_request(request, group_id):
+    """
+    Request to join via mail to a group leader.
+    """
     group = get_object_or_404(LunchGroup, pk=group_id)
     Mail.objects.create(
         sender=request.user,
