@@ -8,6 +8,6 @@
 
     <p><strong>From:</strong> {{ mail.sender }}</p>
     <p><strong>To:</strong> {{ mail.recipient }}</p>
-    <p>{{ mail.text }}</p>
+    <p>{{ mail.text|safe }}</p>
 
 {% endblock %}

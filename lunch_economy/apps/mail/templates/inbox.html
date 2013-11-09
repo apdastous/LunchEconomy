@@ -14,13 +14,13 @@
         {% for item in mail %}
             <tr>
                 <td>
-                    {{ item.sender }}
+                    <a href="{% url 'user_detail' item.sender.id %}">{{ item.sender }}</a>
                     {% if not item.read %}
                         <span class="badge">New!</span>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'mail_detail' item.id %}">{{ item.text }}</a>
+                    <a href="{% url 'mail_detail' item.id %}">{{ item.text|safe|truncatechars:50 }}</a>
                 </td>
             </tr>
         {% endfor %}

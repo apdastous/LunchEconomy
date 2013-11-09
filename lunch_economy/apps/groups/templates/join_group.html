@@ -3,18 +3,21 @@
 {% block title %}My Groups{% endblock %}
 
 {% block body %}
-    <h2>My Groups</h2>
+
+    <h2>Join Group</h2>
     <table class="table table-condensed">
         <thead>
             <tr>
                 <th>Group Name</th>
                 <th>Leader</th>
+                <th></th>
             </tr>
         </thead>
         {% for group in groups %}
             <tr>
-                <td><a href="{% url 'group_detail' group.id %}">{{ group.name }}</a></td>
-                <td><a href="{% url 'user_detail' group.leader.id %}">{{ group.leader.username }}</a></td>
+                <td>{{ group.name }}</td>
+                <td>{{ group.leader.username }}</td>
+                <td><a href="{% url 'send_request' group.id %}">Send Request</a></td>
             </tr>
         {% endfor %}
     </table>

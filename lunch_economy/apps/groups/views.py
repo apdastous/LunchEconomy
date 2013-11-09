@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
 
@@ -7,7 +8,10 @@ from lunch_economy.apps.mail.models import Mail
 
 
 def my_groups(request):
-    context = RequestContext(request, {})
+    groups = LunchGroup.objects.filter(user=request.user)
+    context = RequestContext(request, {
+        'groups': groups
+    })
     return render(request, 'my_groups.html', context)
 
 
@@ -43,4 +47,43 @@ def create_group(request):
 
 
 def join_group(request):
-    pass
+    all_groups = LunchGroup.objects.all()
+
+    groups = []
+    for group in all_groups:
+        if not request.user in group.user_set.all():
+            groups.append(group)
+
+    context = RequestContext(request, {
+        'groups': groups
+    })
+    return render(request, 'join_group.html', context)
+
+
+def send_request(request, group_id):
+    group = get_object_or_404(LunchGroup, pk=group_id)
+    Mail.objects.create(
+        sender=request.user,
+        recipient=group.leader,
+        text="{0} wishes to join your group '{1}'.  Do you <a href='/groups/request/approve/{2}/{3}/'>approve</a>?".format(request.user.username, group.name, group.id, request.user.id)
+    )
+    messages.success(request, "Request has been sent to {0}.".format(group.leader.username))
+    return redirect('join_group')
+
+
+def approve_request(request, group_id, user_id):
+    group = get_object_or_404(LunchGroup, pk=group_id, leader=request.user)
+    user = get_object_or_404(User, pk=user_id)
+
+    if group in user.groups.all():
+        messages.warning(request, "{0} is already in the group '{1}'".format(user.username, group.name))
+        return redirect('inbox')
+
+    user.groups.add(group)
+    Mail.objects.create(
+        sender=request.user,
+        recipient=user,
+        text="You have joined the lunch group '{0}'.".format(group.name)
+    )
+    messages.success(request, "{0} has been added to the group '{1}'.".format(user.username, group.name))
+    return redirect('inbox')
