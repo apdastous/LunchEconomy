@@ -41,5 +41,6 @@ def create_group(request):
         context = RequestContext(request, {})
         return render(request, 'create_group.html', context)
 
+
 def join_group(request):
     pass
