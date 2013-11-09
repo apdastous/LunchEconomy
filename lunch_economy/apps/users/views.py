@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404, render
 from django.template import RequestContext
@@ -14,7 +15,10 @@ def log_in(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return redirect('lunch_economy.apps.core.views.home')
+            if 'next' in request.GET:
+                return redirect(request.GET['next'])
+            else:
+                return redirect('lunch_economy.apps.core.views.home')
         else:
             messages.error(request, "Account has been disabled.")
             return redirect('lunch_economy.apps.core.views.home')
@@ -37,12 +41,14 @@ def log_in(request):
         return redirect('lunch_economy.apps.core.views.home')
 
 
+@login_required
 def log_out(request):
     logout(request)
     messages.success(request, "You have been logged out.")
     return redirect('lunch_economy.apps.core.views.home')
 
 
+@login_required
 def user_detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     context = RequestContext(request, {

@@ -95,6 +95,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
     "lunch_economy.context_processors.unread_messages_notification"
 )
 
@@ -139,6 +140,8 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+LOGIN_URL = "lunch_economy.apps.core.views.home"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

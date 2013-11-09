@@ -55,9 +55,9 @@
                     </li>
                 {% else %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="setTimeout(function(){$('#username').select();},1);">Sign Up / Log In <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="login-dropdown" onclick="setTimeout(function(){$('#username').select();},1);">Sign Up / Log In <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; width: 240px">
-                            <form class="form-inline" role="form" method=POST action="{% url 'login' %}">
+                            <form class="form-inline" role="form" method=POST action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
                                 <div class="form-group">
                                     <label class="sr-only" for="username">Username</label>
                                     <input type="text" class="form-control" id="username" name="username" placeholder="Username" style="margin-bottom: 15px;">
@@ -90,6 +90,12 @@
 
     <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    {% if request.GET.next %}
+        <script>
+            $('#login-dropdown').click();
+        </script>
+    {% endif %}
 
     {% block footer %}{% endblock %}
   </body>

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
@@ -7,6 +8,7 @@ from lunch_economy.apps.groups.models import LunchGroup
 from lunch_economy.apps.mail.models import Mail
 
 
+@login_required
 def my_groups(request):
     groups = LunchGroup.objects.filter(user=request.user)
     context = RequestContext(request, {
@@ -15,6 +17,7 @@ def my_groups(request):
     return render(request, 'my_groups.html', context)
 
 
+@login_required
 def group_detail(request, group_id):
     group = get_object_or_404(LunchGroup, pk=group_id, leader=request.user)
     context = RequestContext(request, {
@@ -23,6 +26,7 @@ def group_detail(request, group_id):
     return render(request, 'group_detail.html', context)
 
 
+@login_required
 def create_group(request):
     if request.POST:
         group_name = request.POST['group-name']
@@ -46,6 +50,7 @@ def create_group(request):
         return render(request, 'create_group.html', context)
 
 
+@login_required
 def join_group(request):
     all_groups = LunchGroup.objects.all()
 
@@ -60,6 +65,7 @@ def join_group(request):
     return render(request, 'join_group.html', context)
 
 
+@login_required
 def send_request(request, group_id):
     """
     Request to join via mail to a group leader.
@@ -74,6 +80,7 @@ def send_request(request, group_id):
     return redirect('join_group')
 
 
+@login_required
 def approve_request(request, group_id, user_id):
     group = get_object_or_404(LunchGroup, pk=group_id, leader=request.user)
     user = get_object_or_404(User, pk=user_id)
