@@ -1,3 +1,5 @@
+#!/bin/bash
+
 virtualenv --clear --no-site-packages env
 
 source activate env
