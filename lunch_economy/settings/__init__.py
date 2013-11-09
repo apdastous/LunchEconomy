@@ -7,4 +7,4 @@ if user == 'jenkins':
 elif user == 'www-data':
     from base import *
 else:
-    from dev import *
+    from local import *
