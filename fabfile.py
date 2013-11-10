@@ -44,7 +44,6 @@ def setup():
     clone_repository()
     checkout_latest()
     create_virtualenv()
-    install_pip_requirements()
 
 
 @task
@@ -89,14 +88,13 @@ def symlink_current_release():
 
 
 def create_virtualenv():
-    with cd(env.releases_directory + "current/"):
+    with cd(env.base_directory):
         run("virtualenv --no-site-packages env")
 
 
 def install_pip_requirements():
-    with cd(env.releases_directory + "current/"):
-        with virtualenv():
-            run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
+    with virtualenv():
+        run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
 
 
 def sync_db():
