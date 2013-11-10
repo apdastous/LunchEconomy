@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^login/$', 'lunch_economy.apps.users.views.log_in', name='login'),
     url(r'^logout/$', 'lunch_economy.apps.users.views.log_out', name='logout'),
+
     url(r'^user/(?P<user_id>\d+)/', 'lunch_economy.apps.users.views.user_detail', name='user_detail'),
 
     url(r'^mail/inbox/', 'lunch_economy.apps.mail.views.inbox', name='inbox'),
