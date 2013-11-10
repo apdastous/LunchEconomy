@@ -23,7 +23,7 @@ def dev():
     env.releases_directory = env.base_directory + 'releases/'
     env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/dev.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_dev.conf.py'
+    env.gunicorn_conf = 'deploy.gunicorn_dev_conf'
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
@@ -35,7 +35,7 @@ def prod():
     env.releases_directory = env.base_directory + 'current/releases/'
     env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/common.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_dev.conf.py'
+    env.gunicorn_conf = 'deploy.gunicorn_prod_conf'
     env.log_directory = '/var/log/lunch-economy/prod/'
 
 
@@ -151,9 +151,10 @@ def stop_gunicorn():
         puts(colors.red("Gunicorn isn't running!"))
         return
 
-    run('kill `cat %s`' % (env.gunicorn_pidpath))
+    gunicorn_conf = import_module(env.gunicorn_conf)
+    run("kill `cat " + gunicorn_conf.pidfile + "`")
 
-    for timeout in range(0,10):
+    for timeout in range(0, 10):
         if gunicorn_running():
             time.sleep(1)
         else:
