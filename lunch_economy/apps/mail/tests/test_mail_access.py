@@ -9,4 +9,4 @@ class TestAccess(TestCase):
     def test_anonymous_user_cannot_access_inbox(self):
         url = reverse('lunch_economy.apps.mail.views.inbox')
         response = self.client.get(url)
-        self.assertRedirects(response, self.home_url)
+        self.assertRedirects(response, self.home_url + "?next=" + url)
