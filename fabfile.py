@@ -23,7 +23,7 @@ def dev():
     env.releases_directory = env.base_directory + 'releases/'
     env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/dev.txt'
-    env.gunicorn_conf = env.releases_directory + 'current/deploy/gunicorn_dev.conf.py'
+    env.gunicorn_conf = 'deploy.gunicorn_dev.conf.py'
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
@@ -35,7 +35,7 @@ def prod():
     env.releases_directory = env.base_directory + 'current/releases/'
     env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/common.txt'
-    env.gunicorn_conf = env.releases_directory + 'current/deploy/gunicorn_prod.conf.py'
+    env.gunicorn_conf = 'deploy.gunicorn_dev.conf.py'
     env.log_directory = '/var/log/lunch-economy/prod/'
 
 
@@ -109,8 +109,9 @@ def sync_db():
 
 
 def gunicorn_running():
-    gunicorn_conf = import_module(env.gunicorn_conf)
-    return run("ls " + gunicorn_conf.pidfile, quiet=True).succeeded
+    with cd(env.releases_directory + "current/deploy/"):
+        gunicorn_conf = import_module(env.gunicorn_conf)
+        return run("ls " + gunicorn_conf.pidfile, quiet=True).succeeded
 
 
 def gunicorn_running_workers():
