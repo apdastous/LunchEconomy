@@ -96,6 +96,7 @@ def checkout_latest():
     env.release = time.strftime('%Y%m%d%H%M%S')
     with cd(env.directory):
         run("cd repository; git pull origin " + env.branch)
+        run("mkdir releases/")
         run("cp -R repository releases/" + env.release)
         run("rm -rf releases/" + env.release + "/.git*")
 
