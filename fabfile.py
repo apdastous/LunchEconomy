@@ -1,8 +1,8 @@
 from contextlib import contextmanager
 from importlib import import_module
 import time
-from fabric import colors
 
+from fabric import colors
 from fabric.context_managers import prefix, cd, settings, hide
 from fabric.decorators import task
 from fabric.operations import run
@@ -109,7 +109,7 @@ def sync_db():
 
 
 def gunicorn_running():
-    with cd(env.releases_directory + "current/deploy/"):
+    with cd(env.releases_directory + "current/"):
         gunicorn_conf = import_module(env.gunicorn_conf)
         return run("ls " + gunicorn_conf.pidfile, quiet=True).succeeded
 
@@ -176,5 +176,6 @@ def reload_gunicorn():
         puts(colors.red("Gunicorn isn't running!"))
         return
     puts(colors.yellow('Gracefully reloading Gunicorn...'))
-    gunicorn_conf = import_module(env.gunicorn_conf)
+    with cd(env.releases_directory + "current/"):
+        gunicorn_conf = import_module(env.gunicorn_conf)
     run("kill -HUP `cat " + gunicorn_conf.pidfile + "`")
