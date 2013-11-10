@@ -19,10 +19,11 @@ env.wsgi_app = 'lunch_economy.wsgi:application'
 def dev():
     env.hosts = ['dev.lunch-economy.com']
     env.branch = 'development'
-    env.directory = '/opt/lunch-economy/dev/'
-    env.activate = env.directory + 'env/bin/activate'
-    env.requirements = env.directory + 'requirements/dev.txt'
-    env.gunicorn_conf = env.directory + 'deploy/gunicorn_dev.conf.py'
+    env.base_directory = '/opt/lunch-economy/dev/'
+    env.releases_directory = env.base_directory + 'releases/'
+    env.activate = env.releases_directory + 'current/env/bin/activate'
+    env.requirements = env.releases_directory + 'current/requirements/dev.txt'
+    env.gunicorn_conf = env.releases_directory + 'current/deploy/gunicorn_dev.conf.py'
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
@@ -30,11 +31,12 @@ def dev():
 def prod():
     env.hosts = ['lunch-economy.com']
     env.branch = 'master'
-    env.directory = '/opt/lunch-economy/prod/'
-    env.activate = env.directory + 'env/bin/activate'
-    env.requirements = env.directory + 'requirements/common.txt'
-    env.gunicorn_conf = env.directory + 'deploy/gunicorn_prod.conf.py'
-    env.log_directory = '/var/log/lunch-economy/'
+    env.base_directory = '/opt/lunch-economy/prod/'
+    env.releases_directory = env.base_directory + 'current/releases/'
+    env.activate = env.releases_directory + 'current/env/bin/activate'
+    env.requirements = env.releases_directory + 'current/requirements/common.txt'
+    env.gunicorn_conf = env.releases_directory + 'current/deploy/gunicorn_prod.conf.py'
+    env.log_directory = '/var/log/lunch-economy/prod/'
 
 
 @contextmanager
@@ -64,29 +66,29 @@ def deploy():
 
 
 def make_directories():
-    run("mkdir -p " + env.directory)
+    run("mkdir -p " + env.releases_directory)
     run("mkdir -p " + env.log_directory)
 
 
 def create_virtualenv():
-    with cd(env.directory + "releases/current/"):
+    with cd(env.releases_directory + "current/"):
         run("virtualenv --no-site-pacakges env")
 
 
 def install_pip_requirements():
-    with cd(env.directory + "releases/current/"):
+    with cd(env.releases_directory + "current/"):
         with virtualenv():
             run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
 
 
 def clone_repository():
-    with cd(env.directory):
+    with cd(env.base_directory):
         run("git clone " + env.repository_url + " repository")
 
 
 def checkout_latest():
     env.release = time.strftime('%Y%m%d%H%M%S')
-    with cd(env.directory):
+    with cd(env.base_directory):
         run("cd repository; git pull origin " + env.branch)
         run("mkdir -p releases/")
         run("cp -R repository releases/" + env.release)
@@ -95,14 +97,14 @@ def checkout_latest():
 
 def symlink_current_release():
     with settings(warn_only=True):
-        with cd(env.directory):
+        with cd(env.base_directory):
             run("rm releases/previous")
             run("mv releases/current releases/previous")
             run("ln -s " + env.release + " releases/current")
 
 
 def sync_db():
-    with cd(env.directory + "releases/current/"):
+    with cd(env.releases_directory + "current/"):
         run("python manage.py syncdb --noinput")
 
 
@@ -132,7 +134,7 @@ def start_gunicorn():
     if gunicorn_running():
             puts(colors.red("Gunicorn is already running!"))
             return
-    with cd(env.directory + 'release/current/'):
+    with cd(env.releases_directory + "current/"):
         with virtualenv():
             run("gunicorn " + env.wsgi_app + "-c " + env.gunicorn_conf)
 
