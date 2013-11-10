@@ -77,7 +77,6 @@ def make_directories():
     run("mkdir -p " + env.log_directory)
 
 
-
 def clone_repository():
     with cd(env.base_directory):
         run("git clone " + env.repository_url + " repository")
@@ -113,7 +112,7 @@ def install_pip_requirements():
 def run_tests():
     with cd(env.releases_directory + "current/"):
         with virtualenv():
-            run("python manage.py test")
+            run("python manage.py test --settings " + env.django_settings_module)
 
 
 def sync_db():
