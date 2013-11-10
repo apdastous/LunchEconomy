@@ -74,7 +74,9 @@ def send_request(request, group_id):
     Mail.objects.create(
         sender=request.user,
         recipient=group.leader,
-        text="{0} wishes to join your group '{1}'.  Do you <a href='/groups/request/approve/{2}/{3}/'>approve</a>?".format(request.user.username, group.name, group.id, request.user.id)
+        text="{0} wishes to join your group '{1}'.  " +
+             "Do you <a href='/groups/request/approve/{2}/{3}/'>approve</a>?".format(
+                 request.user.username, group.name, group.id, request.user.id)
     )
     messages.success(request, "Request has been sent to {0}.".format(group.leader.username))
     return redirect('join_group')

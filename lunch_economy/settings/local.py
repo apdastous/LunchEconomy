@@ -18,4 +18,4 @@ INSTALLED_APPS += ('debug_toolbar',)
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
-    }
+}
