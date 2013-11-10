@@ -1,5 +1,12 @@
 from base import *
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'lunch_economy.db',
+    }
+}
+
 DEBUG = True
 
 INTERNAL_IPS = ('127.0.0.1',)
