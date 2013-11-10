@@ -3,20 +3,28 @@
 {% block title %}My Groups{% endblock %}
 
 {% block body %}
+
     <h2>My Groups</h2>
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>Group Name</th>
-                <th>Leader</th>
-            </tr>
-        </thead>
-        {% for group in groups %}
-            <tr>
-                <td><a href="{% url 'group_detail' group.id %}">{{ group.name }}</a></td>
-                <td><a href="{% url 'user_detail' group.leader.id %}">{{ group.leader.username }}</a></td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% if groups %}
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Leader</th>
+                </tr>
+            </thead>
+            {% for group in groups %}
+                <tr>
+                    <td><a href="{% url 'group_detail' group.id %}">{{ group.name }}</a></td>
+                    <td><a href="{% url 'user_detail' group.leader.id %}">{{ group.leader.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>
+            You are not in any groups.  Would you like to <a href="{% url 'join_group' %}">join</a>
+            or <a href="{% url 'create_group' %}">create</a> one?
+        </p>
+    {% endif %}
 
 {% endblock %}
