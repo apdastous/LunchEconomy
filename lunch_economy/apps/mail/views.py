@@ -17,6 +17,10 @@ def inbox(request):
 
 @login_required
 def mail_detail(request, mail_id):
+    """
+    View that shows details of a single piece of mail.
+    TODO: Add logic so that only sender/recipient can access.
+    """
     mail = get_object_or_404(Mail, pk=mail_id)
     mail.read = True
     mail.save()
