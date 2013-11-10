@@ -1,5 +1,12 @@
 from base import *
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'TEST_NAME': 'test_database.db'
+    }
+}
+
 INSTALLED_APPS += ('django_jenkins',)
 
 PROJECT_APPS = (
