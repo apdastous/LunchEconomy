@@ -1,12 +1,10 @@
 from contextlib import contextmanager
 import time
 
-from fabric import colors
 from fabric.context_managers import prefix, cd, settings
 from fabric.decorators import task
 from fabric.operations import run
 from fabric.state import env
-from fabric.utils import puts, abort
 
 
 env.user = 'www-lunch'
@@ -18,26 +16,34 @@ env.wsgi_app = 'lunch_economy.wsgi:application'
 def dev():
     env.hosts = ['dev.lunch-economy.com']
     env.branch = 'development'
+
     env.base_directory = '/opt/lunch-economy/dev/'
     env.db_directory = env.base_directory + 'db/'
     env.gunicorn_run_directory = env.base_directory + 'run/'
     env.releases_directory = env.base_directory + 'releases/'
+    env.log_directory = '/var/log/lunch-economy/dev/'
+
     env.activate = env.base_directory + 'env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/dev.txt'
-    env.log_directory = '/var/log/lunch-economy/dev/'
+
+    env.django_settings_module = 'lunch_economy.settings.dev'
 
 
 @task
 def prod():
     env.hosts = ['lunch-economy.com']
     env.branch = 'master'
+
     env.base_directory = '/opt/lunch-economy/prod/'
     env.gunicorn_run_directory = env.base_directory + 'run/'
     env.db_directory = env.base_directory + 'db/'
     env.releases_directory = env.base_directory + 'current/releases/'
+    env.log_directory = '/var/log/lunch-economy/prod/'
+
     env.activate = env.base_directory + 'env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/common.txt'
-    env.log_directory = '/var/log/lunch-economy/prod/'
+
+    env.django_settings_module = 'lunch_economy.settings.prod'
 
 
 @task
@@ -105,7 +111,4 @@ def install_pip_requirements():
 
 def sync_db():
     with cd(env.releases_directory + "current/"):
-        run("ln -s " + env.db_directory + " db")
-        run("python manage.py syncdb --noinput")
-
-
+        run("python manage.py syncdb --noinput --settings " + env.django_settings_module)
