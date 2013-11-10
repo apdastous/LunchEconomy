@@ -19,10 +19,11 @@ def dev():
     env.hosts = ['dev.lunch-economy.com']
     env.branch = 'development'
     env.base_directory = '/opt/lunch-economy/dev/'
-    env.activate = env.base_directory + 'env/bin/activate'
+    env.db_directory = env.base_directory + 'db/'
+    env.gunicorn_run_directory = env.base_directory + 'run/'
     env.releases_directory = env.base_directory + 'releases/'
+    env.activate = env.base_directory + 'env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/dev.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_dev_conf'  # Relative to fabfile
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
@@ -31,10 +32,11 @@ def prod():
     env.hosts = ['lunch-economy.com']
     env.branch = 'master'
     env.base_directory = '/opt/lunch-economy/prod/'
-    env.activate = env.base_directory + 'env/bin/activate'
+    env.gunicorn_run_directory = env.base_directory + 'run/'
+    env.db_directory = env.base_directory + 'db/'
     env.releases_directory = env.base_directory + 'current/releases/'
+    env.activate = env.base_directory + 'env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/common.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_prod_conf'  # Relative to fabfile
     env.log_directory = '/var/log/lunch-economy/prod/'
 
 
@@ -61,8 +63,12 @@ def virtualenv():
 
 
 def make_directories():
+    run("mkdir -p " + env.base_directory)
+    run("mkdir -p " + env.gunicorn_run_directory)
     run("mkdir -p " + env.releases_directory)
+    run("mkdir -p " + env.db_directory)
     run("mkdir -p " + env.log_directory)
+
 
 
 def clone_repository():
@@ -98,10 +104,8 @@ def install_pip_requirements():
 
 
 def sync_db():
-    with cd(env.base_directory):
-        run("mkdir -p db/")
     with cd(env.releases_directory + "current/"):
-        run("ln -s " + env.base_directory + "db/ db")
+        run("ln -s " + env.db_directory + " db")
         run("python manage.py syncdb --noinput")
 
 
