@@ -24,7 +24,7 @@ def log_in(request):
             return redirect('lunch_economy.apps.core.views.home')
     else:
         try:
-            existing_user = User.objects.get(username=username)
+            User.objects.get(username=username)
         except User.DoesNotExist:
             new_user = User.objects.create_user(username=username, password=password)
             new_user.save()

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
+from django.http import HttpResponse
 
 from lunch_economy.apps.mail.models import Mail
 
@@ -19,9 +20,10 @@ def inbox(request):
 def mail_detail(request, mail_id):
     """
     View that shows details of a single piece of mail.
-    TODO: Add logic so that only sender/recipient can access.
     """
     mail = get_object_or_404(Mail, pk=mail_id)
+    if request.user is not mail.sender and request.user is not mail.recipient:
+        return HttpResponse('Unauthorized', status=401)
     mail.read = True
     mail.save()
     context = RequestContext(request, {
