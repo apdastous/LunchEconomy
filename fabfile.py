@@ -27,8 +27,8 @@ env.wsgi_app = 'lunch_economy.wsgi:application'
 def dev():
     env.branch = 'development'
     env.directory = '/opt/lunch-economy/dev/'
-    env.activate = env.directory + '/env/bin/activate'
-    env.requirements = env.directory + '/requirements/dev.txt'
+    env.activate = env.directory + 'env/bin/activate'
+    env.requirements = env.directory + 'requirements/dev.txt'
     env.gunicorn_conf = env.directory + 'deploy/gunicorn_dev.conf.py'
     env.wsgi_app = 'lunch_economy.wsgi:application'
     env.log_directory = '/var/log/lunch-economy/dev/'
@@ -38,8 +38,8 @@ def dev():
 def prod():
     env.branch = 'master'
     env.directory = '/opt/lunch-economy/prod/'
-    env.activate = env.directory + '/env/bin/activate'
-    env.requirements = env.directory + '/requirements/common.txt'
+    env.activate = env.directory + 'env/bin/activate'
+    env.requirements = env.directory + 'requirements/common.txt'
     env.gunicorn_conf = env.directory + 'deploy/gunicorn_prod.conf.py'
     env.wsgi_app = 'lunch_economy.wsgi:application'
     env.log_directory = '/var/log/lunch-economy/'
@@ -56,14 +56,14 @@ def setup():
     make_directories()
     clone_repository()
     checkout_latest()
-    install_pip_requirements()
 
 
 @task
 def deploy():
     checkout_latest()
-    install_pip_requirements()
     symlink_current_release()
+    create_virtualenv()
+    install_pip_requirements()
     sync_db()
     if not gunicorn_running():
         start_gunicorn()
@@ -77,12 +77,12 @@ def make_directories():
 
 
 def create_virtualenv():
-    with cd(env.directory):
+    with cd(env.directory + "releases/current/"):
         run("virtualenv --no-site-pacakges env")
 
 
 def install_pip_requirements():
-    with cd(env.directory):
+    with cd(env.directory + "releases/current/"):
         with virtualenv():
             run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
 
@@ -110,7 +110,7 @@ def symlink_current_release():
 
 
 def sync_db():
-    with cd(env.directory):
+    with cd(env.directory + "releases/current/"):
         run("python manage.py syncdb --noinput")
 
 
