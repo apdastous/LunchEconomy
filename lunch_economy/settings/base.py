@@ -1,8 +1,5 @@
 # Django settings for LunchEconomy project.
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ('Alex D\'Astous', 'apdastous@gmail.com'),
 )
