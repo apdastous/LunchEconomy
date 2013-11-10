@@ -59,6 +59,7 @@ def deploy():
     checkout_latest()
     symlink_current_release()
     install_pip_requirements()
+    run_tests()
     sync_db()
 
 
@@ -109,6 +110,13 @@ def install_pip_requirements():
         run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
 
 
+def run_tests():
+    with cd(env.releases_directory + "current/"):
+        with virtualenv():
+            run("python manage.py test")
+
+
 def sync_db():
     with cd(env.releases_directory + "current/"):
-        run("python manage.py syncdb --noinput --settings " + env.django_settings_module)
+        with virtualenv():
+            run("python manage.py syncdb --noinput --settings " + env.django_settings_module)
