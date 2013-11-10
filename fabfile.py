@@ -31,7 +31,7 @@ def dev():
     env.requirements = env.directory + '/requirements/dev.txt'
     env.gunicorn_conf = env.directory + 'deploy/gunicorn_dev.conf.py'
     env.wsgi_app = 'lunch_economy.wsgi:application'
-    env.log_dir = '/var/log/lunch-economy/dev/'
+    env.log_directory = '/var/log/lunch-economy/dev/'
 
 
 @task
