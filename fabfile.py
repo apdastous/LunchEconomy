@@ -28,6 +28,8 @@ def dev():
 
     env.django_settings_module = 'lunch_economy.settings.dev'
 
+    env.supervisor_job = 'lunch-economy-dev'
+
 
 @task
 def prod():
@@ -45,6 +47,8 @@ def prod():
 
     env.django_settings_module = 'lunch_economy.settings.prod'
 
+    env.supervisor_job = 'lunch-economy-prod'
+
 
 @task
 def setup():
@@ -61,6 +65,7 @@ def deploy():
     install_pip_requirements()
     run_tests()
     sync_db()
+    restart()
 
 
 @contextmanager
@@ -119,3 +124,21 @@ def sync_db():
     with cd(env.releases_directory + "current/"):
         with virtualenv():
             run("python manage.py syncdb --noinput --settings " + env.django_settings_module)
+
+
+@task
+def start():
+    with settings(warn_only=True):
+        run("sudo supervisorctl start " + env.supervisor_job)
+
+
+@task
+def stop():
+    with settings(warn_only=True):
+        run("sudo supervisorctl stop " + env.supervisor_job)
+
+
+@task
+def restart():
+    with settings(warn_only=True):
+        run("sudo supervisorctl restart " + env.supervisor_job)
