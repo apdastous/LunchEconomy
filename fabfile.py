@@ -10,14 +10,6 @@ from fabric.state import env
 from fabric.utils import puts, abort
 
 
-env.hosts = [
-    'dev.lunch-economy.com',
-    'lunch-economy.com'
-]
-env.roledefs = {
-    'dev': ['dev.lunch-economy.com'],
-    'prod': ['lunch-economy.com']
-}
 env.user = 'www-data'
 env.repository_url = 'https://github.com/apdastous/LunchEconomy.git'
 env.wsgi_app = 'lunch_economy.wsgi:application'
@@ -25,23 +17,23 @@ env.wsgi_app = 'lunch_economy.wsgi:application'
 
 @task
 def dev():
+    env.hosts = ['dev.lunch-economy.com']
     env.branch = 'development'
     env.directory = '/opt/lunch-economy/dev/'
     env.activate = env.directory + 'env/bin/activate'
     env.requirements = env.directory + 'requirements/dev.txt'
     env.gunicorn_conf = env.directory + 'deploy/gunicorn_dev.conf.py'
-    env.wsgi_app = 'lunch_economy.wsgi:application'
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
 @task
 def prod():
+    env.hosts = ['lunch-economy.com']
     env.branch = 'master'
     env.directory = '/opt/lunch-economy/prod/'
     env.activate = env.directory + 'env/bin/activate'
     env.requirements = env.directory + 'requirements/common.txt'
     env.gunicorn_conf = env.directory + 'deploy/gunicorn_prod.conf.py'
-    env.wsgi_app = 'lunch_economy.wsgi:application'
     env.log_directory = '/var/log/lunch-economy/'
 
 
