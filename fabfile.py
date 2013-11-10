@@ -70,17 +70,6 @@ def make_directories():
     run("mkdir -p " + env.log_directory)
 
 
-def create_virtualenv():
-    with cd(env.releases_directory + "current/"):
-        run("virtualenv --no-site-pacakges env")
-
-
-def install_pip_requirements():
-    with cd(env.releases_directory + "current/"):
-        with virtualenv():
-            run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
-
-
 def clone_repository():
     with cd(env.base_directory):
         run("git clone " + env.repository_url + " repository")
@@ -101,6 +90,17 @@ def symlink_current_release():
             run("rm releases/previous")
             run("mv releases/current releases/previous")
             run("ln -s " + env.release + " releases/current")
+
+
+def create_virtualenv():
+    with cd(env.releases_directory + "current/"):
+        run("virtualenv --no-site-packages env")
+
+
+def install_pip_requirements():
+    with cd(env.releases_directory + "current/"):
+        with virtualenv():
+            run("pip install --download-cache /tmp/" + env.user + "/pip-cache -r " + env.requirements)
 
 
 def sync_db():
