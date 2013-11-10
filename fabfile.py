@@ -1,16 +1,15 @@
 from contextlib import contextmanager
-from importlib import import_module
 import time
 
 from fabric import colors
-from fabric.context_managers import prefix, cd, settings, hide
+from fabric.context_managers import prefix, cd, settings
 from fabric.decorators import task
 from fabric.operations import run
 from fabric.state import env
 from fabric.utils import puts, abort
 
 
-env.user = 'www-data'
+env.user = 'www-lunch'
 env.repository_url = 'https://github.com/apdastous/LunchEconomy.git'
 env.wsgi_app = 'lunch_economy.wsgi:application'
 
@@ -20,10 +19,10 @@ def dev():
     env.hosts = ['dev.lunch-economy.com']
     env.branch = 'development'
     env.base_directory = '/opt/lunch-economy/dev/'
+    env.activate = env.base_directory + 'env/bin/activate'
     env.releases_directory = env.base_directory + 'releases/'
-    env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/dev.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_dev_conf'
+    env.gunicorn_conf = 'deploy.gunicorn_dev_conf'  # Relative to fabfile
     env.log_directory = '/var/log/lunch-economy/dev/'
 
 
@@ -32,17 +31,11 @@ def prod():
     env.hosts = ['lunch-economy.com']
     env.branch = 'master'
     env.base_directory = '/opt/lunch-economy/prod/'
+    env.activate = env.base_directory + 'env/bin/activate'
     env.releases_directory = env.base_directory + 'current/releases/'
-    env.activate = env.releases_directory + 'current/env/bin/activate'
     env.requirements = env.releases_directory + 'current/requirements/common.txt'
-    env.gunicorn_conf = 'deploy.gunicorn_prod_conf'
+    env.gunicorn_conf = 'deploy.gunicorn_prod_conf'  # Relative to fabfile
     env.log_directory = '/var/log/lunch-economy/prod/'
-
-
-@contextmanager
-def virtualenv():
-    with prefix("source " + env.activate):
-        yield
 
 
 @task
@@ -50,19 +43,22 @@ def setup():
     make_directories()
     clone_repository()
     checkout_latest()
+    create_virtualenv()
+    install_pip_requirements()
 
 
 @task
 def deploy():
     checkout_latest()
     symlink_current_release()
-    create_virtualenv()
     install_pip_requirements()
     sync_db()
-    if not gunicorn_running():
-        start_gunicorn()
-    else:
-        reload_gunicorn()
+
+
+@contextmanager
+def virtualenv():
+    with prefix("source " + env.activate):
+        yield
 
 
 def make_directories():
@@ -104,78 +100,8 @@ def install_pip_requirements():
 
 
 def sync_db():
-    with cd(env.releases_directory + "current/"):
+    with cd(env.base_directory):
+        run("mkdir -p db/")
         run("python manage.py syncdb --noinput")
 
 
-def gunicorn_running():
-    with cd(env.releases_directory + "current/"):
-        gunicorn_conf = import_module(env.gunicorn_conf)
-        return run("ls " + gunicorn_conf.pidfile, quiet=True).succeeded
-
-
-def gunicorn_running_workers():
-    count = None
-    with hide('running', 'stdout', 'stderr'):
-        count = run("ps -e -o ppid | grep `cat " + env.gunicorn_run_dir + "` | wc -l")
-    return count
-
-
-@task
-def gunicorn_status():
-    if gunicorn_running():
-        puts(colors.green("Gunicorn is running."))
-        puts(colors.green("Active workers: {0}".format(gunicorn_running_workers())))
-    else:
-        puts(colors.blue("Gunicorn isn't running."))
-
-
-@task
-def start_gunicorn():
-    if gunicorn_running():
-            puts(colors.red("Gunicorn is already running!"))
-            return
-    with cd(env.releases_directory + "current/"):
-        with virtualenv():
-            run("gunicorn " + env.wsgi_app + "-c " + env.gunicorn_conf)
-
-    if gunicorn_running():
-        puts(colors.green("Gunicorn started."))
-    else:
-        abort(colors.red("Gunicorn wasn't started!"))
-
-
-@task
-def stop_gunicorn():
-    if not gunicorn_running():
-        puts(colors.red("Gunicorn isn't running!"))
-        return
-
-    gunicorn_conf = import_module(env.gunicorn_conf)
-    run("kill `cat " + gunicorn_conf.pidfile + "`")
-
-    for timeout in range(0, 10):
-        if gunicorn_running():
-            time.sleep(1)
-        else:
-            puts(colors.green("Gunicorn was stopped."))
-            return
-    else:
-        abort(colors.red("Gunicorn wasn't stopped!"))
-
-
-@task
-def restart_gunicorn():
-    stop_gunicorn()
-    start_gunicorn()
-
-
-@task
-def reload_gunicorn():
-    if not gunicorn_running():
-        puts(colors.red("Gunicorn isn't running!"))
-        return
-    puts(colors.yellow('Gracefully reloading Gunicorn...'))
-    with cd(env.releases_directory + "current/"):
-        gunicorn_conf = import_module(env.gunicorn_conf)
-    run("kill -HUP `cat " + gunicorn_conf.pidfile + "`")

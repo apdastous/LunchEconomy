@@ -4,7 +4,7 @@ user = getuser()
 
 if user == 'jenkins':
     from jenkins import *
-elif user == 'www-data':
+elif user == 'www-lunch':
     from base import *
 else:
     from local import *
