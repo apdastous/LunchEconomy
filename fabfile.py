@@ -100,6 +100,8 @@ def install_pip_requirements():
 def sync_db():
     with cd(env.base_directory):
         run("mkdir -p db/")
+    with cd(env.releases_directory + "current/"):
+        run("ln -s " + env.base_directory + " db/")
         run("python manage.py syncdb --noinput")
 
 
