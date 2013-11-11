@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -6,6 +8,8 @@ from django.template import RequestContext
 
 from lunch_economy.apps.groups.models import LunchGroup
 from lunch_economy.apps.mail.models import Mail
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -39,6 +43,7 @@ def create_group(request):
                 recipient=request.user,
                 text="You have created a new group named '{0}'!".format(group.name)
             )
+            logger.info("User '{0}' created group '{1}' ({2}).".format(group.leader, group.name, group.id))
             return redirect('group_detail', group_id=group.id)
 
         messages.error(request, "Group name is already taken!")
