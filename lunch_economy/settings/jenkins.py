@@ -28,12 +28,5 @@ TEST_TASKS = (
 
 TEST_COVERAGE_EXCLUDES_FOLDERS = [
     '/usr/local/*',
-]
-
-TEST_COVERAGE_EXCLUDES = [
-    'lunch_economy.apps.core.tests',
-    'lunch_economy.apps.groups.tests',
-    'lunch_economy.apps.lunch.tests',
-    'lunch_economy.apps.mail.tests',
-    'lunch_economy.apps.users.tests',
+    'lunch_economy/apps/*/tests/*',
 ]
