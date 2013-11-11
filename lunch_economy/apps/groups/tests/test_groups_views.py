@@ -1,3 +1,7 @@
+"""
+Unit tests for lunch_economy.apps.group.views.
+"""
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -6,22 +10,42 @@ from lunch_economy.apps.groups.models import LunchGroup
 
 
 class TestMyGroupsView(TestCase):
+    """
+    Unit tests for the 'my_group' view.
+    """
+
     def setUp(self):
-        User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
+        """
+        All views have the login_required decorator, so let's log in a test user.
+        """
+        self.test_user = User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
         self.client.login(username='test_user', password='test_user')
 
     def test_view_returns_status_200(self):
+        """
+        A get with no params returns status 200.
+        """
         url = reverse('lunch_economy.apps.groups.views.my_groups')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
 
 class TestCreateGroupView(TestCase):
+    """
+    Unit tests for the 'create_group' view.
+    """
+
     def setUp(self):
+        """
+        All views have the login_required decorator, so let's log in a test user.
+        """
         self.test_user = User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
         self.client.login(username='test_user', password='test_user')
 
     def test_view_returns_status_200(self):
+        """
+        A get with no params returns status 200.
+        """
         url = reverse('lunch_economy.apps.groups.views.create_group')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -31,7 +55,8 @@ class TestCreateGroupView(TestCase):
         data = {'group-name': "Test Group"}
         response = self.client.post(url, data)
         group = LunchGroup.objects.get(name="Test Group")
-        self.assertRedirects(response, reverse('lunch_economy.apps.groups.views.group_detail', args=(group.id,)))
+        redirect_url = reverse('lunch_economy.apps.groups.views.group_detail', args=(group.id,))
+        self.assertRedirects(response, redirect_url)
 
     def test_post_with_valid_data_creates_group_model(self):
         url = reverse('lunch_economy.apps.groups.views.create_group')
@@ -72,11 +97,21 @@ class TestCreateGroupView(TestCase):
 
 
 class TestJoinGroupView(TestCase):
+    """
+    Unit tests for the 'join_group' view.
+    """
+
     def setUp(self):
+        """
+        All views have the login_required decorator, so let's log in a test user.
+        """
         self.test_user = User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
         self.client.login(username='test_user', password='test_user')
 
     def test_view_returns_status_200(self):
+        """
+        A get with no params returns status 200.
+        """
         url = reverse('lunch_economy.apps.groups.views.join_group')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -97,11 +132,21 @@ class TestJoinGroupView(TestCase):
 
 
 class TestGroupDetailView(TestCase):
+    """
+    Unit tests for the group_detail view.
+    """
     def setUp(self):
-        User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
+        """
+        All views have the login_required decorator, so let's log in a test user.
+        """
+        self.test_user = User.objects.create_user('test_user', 'test_user@lunch-economy.com', 'test_user')
         self.client.login(username='test_user', password='test_user')
 
     def test_group_detail_returns_status_200(self):
+        """
+        Adds a user and creates a group with that user as leader.
+        A get with no params returns status 200.
+        """
         leader = User.objects.create_user('test_leader', 'test_leader@lunch-economy.com', 'test_leader')
         group = LunchGroup.objects.create(name="Test Group", leader=leader)
         url = reverse('lunch_economy.apps.groups.views.group_detail', args=(group.id,))

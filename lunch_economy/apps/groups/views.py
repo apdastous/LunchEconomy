@@ -31,11 +31,9 @@ def create_group(request):
     if request.POST:
         group_name = request.POST['group-name']
         try:
-            group = LunchGroup.objects.get(name=group_name)
+            LunchGroup.objects.get(name=group_name)
         except LunchGroup.DoesNotExist:
-            group = LunchGroup.objects.create(name=group_name, leader=request.user)
-            group.save()
-            request.user.groups.add(group)
+            group = LunchGroup.create_for_user(group_name=group_name, user=request.user)
             messages.success(request, "Group created!")
             Mail.system_notification(
                 recipient=request.user,
