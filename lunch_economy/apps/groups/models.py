@@ -1,8 +1,15 @@
+"""
+Models for lunch_economy.apps.groups.
+"""
+
 from django.contrib.auth.models import Group, User
 from django.db import models
 
 
 class LunchGroup(Group):
+    """
+    Extends Django's built-in groups to add a field for leader.
+    """
     leader = models.ForeignKey(User)
 
     @classmethod

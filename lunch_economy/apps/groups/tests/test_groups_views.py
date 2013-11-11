@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from lunch_economy.apps.groups.models import LunchGroup
+from lunch_economy.apps.mail.models import Mail
 
 
 class TestMyGroupsView(TestCase):
@@ -51,6 +52,9 @@ class TestCreateGroupView(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_with_valid_data_redirects_to_group_detail(self):
+        """
+        POSTing with valid data redirects to the group_detail view.
+        """
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         response = self.client.post(url, data)
@@ -59,6 +63,9 @@ class TestCreateGroupView(TestCase):
         self.assertRedirects(response, redirect_url)
 
     def test_post_with_valid_data_creates_group_model(self):
+        """
+        POSTing with valid data creates the LunchGroup model.
+        """
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         self.client.post(url, data)
@@ -66,6 +73,9 @@ class TestCreateGroupView(TestCase):
         self.assertEqual(group.name, data['group-name'])
 
     def test_post_with_valid_data_sets_user_as_group_leader(self):
+        """
+        POSTing with valid data adds the user to the LunchGroup leader field.
+        """
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         self.client.post(url, data)
@@ -73,6 +83,9 @@ class TestCreateGroupView(TestCase):
         self.assertEqual(group.leader, self.test_user)
 
     def test_post_with_valid_data_adds_user_to_group(self):
+        """
+        POSTing with valid data adds the user to the LunchGroup group.
+        """
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         self.client.post(url, data)
@@ -80,6 +93,9 @@ class TestCreateGroupView(TestCase):
         self.assertTrue(self.test_user.groups.filter(name=group.name).exists())
 
     def test_post_with_group_name_already_taken_returns_error_message(self):
+        """
+        POSTing with a group name that is already used results in error message.
+        """
         leader = User.objects.create_user('test_leader', 'test_leader@lunch-economy.com', 'test_leader')
         LunchGroup.objects.create(name="Test Group", leader=leader)
         url = reverse('lunch_economy.apps.groups.views.create_group')
@@ -88,12 +104,25 @@ class TestCreateGroupView(TestCase):
         self.assertContains(response, "already taken")
 
     def test_post_with_group_name_already_taken_redirects_to_create_group(self):
+        """
+        POSTing with a group name that is already used redirects to the create_group view.
+        """
         leader = User.objects.create_user('test_leader', 'test_leader@lunch-economy.com', 'test_leader')
         LunchGroup.objects.create(name="Test Group", leader=leader)
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         response = self.client.post(url, data, follow=True)
         self.assertRedirects(response, url)
+
+    def test_user_recieves_system_notification_after_creating_group(self):
+        """
+        POSTing with valid data results in mail being created.
+        """
+        url = reverse('lunch_economy.apps.groups.views.create_group')
+        data = {'group-name': "Test Group"}
+        self.client.post(url, data)
+        mail = Mail.objects.get(recipient=self.test_user)
+        self.assertIn(data['group-name'], mail.text)
 
 
 class TestJoinGroupView(TestCase):
