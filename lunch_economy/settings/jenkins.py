@@ -28,6 +28,12 @@ TEST_TASKS = (
 
 TEST_COVERAGE_EXCLUDES_FOLDERS = [
     '/usr/local/*',
-    '*/tests/*'
-    '*__init__.py*'
+]
+
+TEST_COVERAGE_EXCLUDES = [
+    'lunch_economy.apps.core.tests',
+    'lunch_economy.apps.groups.tests',
+    'lunch_economy.apps.lunch.tests',
+    'lunch_economy.apps.mail.tests',
+    'lunch_economy.apps.users.tests',
 ]
