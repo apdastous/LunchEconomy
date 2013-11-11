@@ -24,6 +24,7 @@ TEST_PROJECT_APPS = (
 TEST_TASKS = (
     'discover_jenkins.tasks.with_coverage.CoverageTask',
     'discover_jenkins.tasks.run_pylint.PyLintTask',
+    'discover_jenkins.tasks.run_sloccount.SlocCountTask',
 )
 
 TEST_COVERAGE_EXCLUDES_FOLDERS = [

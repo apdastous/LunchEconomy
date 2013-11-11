@@ -19,7 +19,7 @@ def my_groups(request):
 
 @login_required
 def group_detail(request, group_id):
-    group = get_object_or_404(LunchGroup, pk=group_id, leader=request.user)
+    group = get_object_or_404(LunchGroup, pk=group_id)
     context = RequestContext(request, {
         'group': group,
     })
