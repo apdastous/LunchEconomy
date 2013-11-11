@@ -119,10 +119,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'lunch_economy.apps.core',
-    'lunch_economy.apps.users',
     'lunch_economy.apps.groups',
-    'lunch_economy.apps.mail',
     'lunch_economy.apps.lunch',
+    'lunch_economy.apps.mail',
+    'lunch_economy.apps.users',
 )
 
 from django.contrib.messages import constants as messages

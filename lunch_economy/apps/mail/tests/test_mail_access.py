@@ -17,7 +17,7 @@ class TestAccess(TestCase):
     def test_user_cannot_read_others_mail(self):
         test_user_1 = User.objects.create_user('test_user_1', 'test_user_1@lunch-economy.com', 'test_user_1')
         test_user_2 = User.objects.create_user('test_user_2', 'test_user_2@lunch-economy.com', 'test_user_2')
-        spy_user = User.objects.create_user('spy_user', 'spy_user@lunch-economy.com', 'spy_user')
+        User.objects.create_user('spy_user', 'spy_user@lunch-economy.com', 'spy_user')
         mail = Mail.objects.create(
             sender=test_user_1,
             recipient=test_user_2,

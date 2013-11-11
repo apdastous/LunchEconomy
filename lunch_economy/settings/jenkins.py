@@ -13,10 +13,10 @@ INSTALLED_APPS += ('django_jenkins',)
 
 PROJECT_APPS = (
     'lunch_economy.apps.core',
-    'lunch_economy.apps.users',
     'lunch_economy.apps.groups',
-    'lunch_economy.apps.mail',
     'lunch_economy.apps.lunch',
+    'lunch_economy.apps.mail',
+    'lunch_economy.apps.users',
 )
 
 JENKINS_TASKS = (
@@ -25,4 +25,8 @@ JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',
 )
 
-COVERAGE_EXCLUDES_FOLDERS = ['/usr/local/*']
+COVERAGE_EXCLUDES_FOLDERS = [
+    '/usr/local/*',
+    '*/tests/*'
+    '*__init__.py*'
+]
