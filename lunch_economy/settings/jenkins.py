@@ -9,9 +9,11 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS += ('django_jenkins',)
+INSTALLED_APPS += ('discover_jenkins',)
 
-PROJECT_APPS = (
+TEST_RUNNER = 'discover_jenkins.runner.DiscoverCIRunner'
+
+TEST_PROJECT_APPS = (
     'lunch_economy.apps.core',
     'lunch_economy.apps.groups',
     'lunch_economy.apps.lunch',
@@ -19,13 +21,12 @@ PROJECT_APPS = (
     'lunch_economy.apps.users',
 )
 
-JENKINS_TASKS = (
-    'django_jenkins.tasks.dir_tests',
-    'django_jenkins.tasks.with_coverage',
-    'django_jenkins.tasks.run_pylint',
+TEST_TASKS = (
+    'discover_jenkins.tasks.with_coverage.CoverageTask',
+    'discover_jenkins.tasks.run_pylint.PyLintTask',
 )
 
-COVERAGE_EXCLUDES_FOLDERS = [
+TEST_COVERAGE_EXCLUDES_FOLDERS = [
     '/usr/local/*',
     '*/tests/*'
     '*__init__.py*'

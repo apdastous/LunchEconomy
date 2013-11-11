@@ -1,2 +1,2 @@
 -r common.txt
-django-jenkins==0.14.1
+django-discover-jenkins==0.1.1
