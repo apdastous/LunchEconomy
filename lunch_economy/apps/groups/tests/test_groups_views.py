@@ -3,6 +3,7 @@ Unit tests for lunch_economy.apps.group.views.
 """
 
 from django.contrib.auth.models import User
+from django.contrib.messages import constants
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -101,7 +102,9 @@ class TestCreateGroupView(TestCase):
         url = reverse('lunch_economy.apps.groups.views.create_group')
         data = {'group-name': "Test Group"}
         response = self.client.post(url, data, follow=True)
-        self.assertContains(response, "already taken")
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].level, constants.ERROR)
 
     def test_post_with_group_name_already_taken_redirects_to_create_group(self):
         """
