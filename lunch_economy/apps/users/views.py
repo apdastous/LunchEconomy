@@ -1,7 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.template import RequestContext
 
@@ -26,20 +28,27 @@ def log_in(request):
         try:
             User.objects.get(username=username)
         except User.DoesNotExist:
-            new_user = User.objects.create_user(username=username, password=password)
-            new_user.save()
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, "Account has been created!")
-            Mail.system_notification(
-                recipient=new_user,
-                text="Welcome to the site!"
-            )
-            return redirect('lunch_economy.apps.core.views.home')
+            p = make_password(request.POST['password'])
+            url = reverse('lunch_economy.apps.core.views.home')
+            return redirect(url + '?u=' + username + '&p=' + p)
 
         messages.error(request, "Invalid login or username already taken.")
         return redirect('lunch_economy.apps.core.views.home')
 
+
+def sign_up(request):
+    username = request.GET['username']
+    password = request.GET['password']
+    new_user = User.objects.create_user(username=username, password=password)
+    new_user.save()
+    user = authenticate(username=username, password=password)
+    login(request, user)
+    messages.success(request, "Account has been created!")
+    Mail.system_notification(
+        recipient=new_user,
+        text="Welcome to the site!"
+    )
+    return redirect('lunch_economy.apps.core.views.home')
 
 @login_required
 def log_out(request):
