@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'lunch_economy.apps.users.views.log_out', name='logout'),
 
     url(r'^user/(?P<user_id>\d+)/', 'lunch_economy.apps.users.views.user_detail', name='user_detail'),
-    url(r'^user/me/', 'lunch_economy.apps.users.views.me', name='me'),
+    url(r'^user/me/', 'lunch_economy.apps.users.views.my_profile', name='my_profile'),
 
     url(r'^mail/inbox/', 'lunch_economy.apps.mail.views.inbox', name='inbox'),
     url(r'^mail/(?P<mail_id>\d+)/', 'lunch_economy.apps.mail.views.mail_detail', name='mail_detail'),

@@ -51,7 +51,7 @@ def log_out(request):
 @login_required
 def user_detail(request, user_id):
     if user_id == request.user.id:
-        redirect('lunch_economy.apps.users.views.me')
+        redirect('lunch_economy.apps.users.views.my_profile')
     user = get_object_or_404(User, pk=user_id)
     context = RequestContext(request, {
         'user_detail': user
@@ -60,7 +60,7 @@ def user_detail(request, user_id):
 
 
 @login_required
-def me(request):
+def my_profile(request):
     me = User.objects.get(pk=request.user.id)
     context = RequestContext(request, {
         'me': me
