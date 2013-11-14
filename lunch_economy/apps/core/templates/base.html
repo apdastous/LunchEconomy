@@ -49,7 +49,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'inbox' %}">Messages <span class="badge">{{ unread_messages.count }}</span></a></li>
-                            <li><a href="#">Settings</a></li>
+                            <li><a href="{% url 'my_profile' %}">My Profile</a></li>
                             <li><a href="{% url 'logout' %}">Log out</a></li>
                         </ul>
                     </li>
